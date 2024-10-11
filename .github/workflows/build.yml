@@ -30,7 +30,7 @@ jobs:
           buildozer -v android debug  # APK oluşturma
 
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3  # Güncellenmiş sürüm
         with:
           name: APK
-          path: bin/*.apk  # Oluşturulan APK dosyasının yolu
+          path: hydra/bin/*.apk  # Oluşturulan APK dosyasının yolu
