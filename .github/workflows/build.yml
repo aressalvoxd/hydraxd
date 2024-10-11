@@ -8,31 +8,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3  # En güncel sürüm
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
+      - name: Set up Python
+        uses: actions/setup-python@v4  # En güncel sürüm
+        with:
+          python-version: '3.8'  # Gerekli Python sürümü
 
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-        sudo apt-get install -y python3-pip python3-dev build-essential git \
-            libgl1-mesa-dev libgles2-mesa-dev libgstreamer1.0-dev \
-            libgstreamer-plugins-base1.0-dev libgstreamer1.0-gtk3-dev \
-            gstreamer1.0-tools gstreamer1.0-gtk3 \
-            libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev \
-            libsdl2-ttf-dev libportmidi-dev libswscale-dev \
-            libavformat-dev libavcodec-dev ffmpeg libgmp-dev
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip python3-setuptools python3-venv
+          pip install buildozer  # Buildozer yükleme
 
-    - name: Install Buildozer
-      run: |
-        pip install buildozer
+      - name: Build APK
+        run: |
+          cd hydra  # Projenizin dizinine geçin
+          buildozer -v android debug  # APK oluşturma
 
-    - name: Build APK
-      run: |
-        buildozer -v android debug
-        buildozer android deploy run
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: APK
+          path: bin/*.apk  # Oluşturulan APK dosyasının yolu
