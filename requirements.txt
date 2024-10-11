@@ -1,0 +1,5 @@
+kivy
+kivy_garden.xcamera
+twilio
+sounddevice
+numpy
